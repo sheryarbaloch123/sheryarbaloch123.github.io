@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Recipe Management System</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>hello</h1>
+    <div class="container">
+        <h1>Recipe Management System</h1>
+
+        <div id="recipeList">
+            <h2>Recipes</h2>
+            <input type="text" id="searchInput" placeholder="Search by recipe title">
+            <ul id="recipes"></ul>
+        </div>
+
+        <a href="create.html">Create New Recipe</a>
+
+        <div id="ingredientList">
+            <h2>Ingredients</h2>
+            <input type="text" id="ingredientInput" placeholder="Add new ingredient">
+            <button id="addIngredientButton">Add Ingredient</button>
+            <ul id="ingredients"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
