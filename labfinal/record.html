@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Records</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+    <div class="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1 mt-8">
+        <div class="p-6 sm:p-12">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl xl:text-3xl font-extrabold">Student Records</h1>
+                <button onclick="window.location.href = 'registration.html'" class="px-4 py-2 bg-indigo-500 text-white rounded-lg">Add New Record</button>
+            </div>
+            <div class="overflow-x-auto mt-8">
+                <table class="w-full table-fixed">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-indigo-500 text-gray-100 font-semibold">Name</th>
+                            <th class="px-6 py-3 bg-indigo-500 text-gray-100 font-semibold">Gender</th>
+                            <th class="px-6 py-3 bg-indigo-500 text-gray-100 font-semibold">Email</th>
+                            <th class="px-6 py-3 bg-indigo-500 text-gray-100 font-semibold">Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include 'db.php';
+                        $sql = "SELECT name, gender, email, address FROM users";
+                        $result = $conn->query($sql);
+
+                        if ($result === false) {
+                            echo "<tr><td colspan='4'>Error executing query: " . $conn->error . "</td></tr>";
+                        } elseif ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td class='px-6 py-2'>" . htmlspecialchars($row['name']) . "</td>";
+                                echo "<td class='px-6 py-2'>" . htmlspecialchars($row['gender']) . "</td>";
+                                echo "<td class='px-6 py-2'>" . htmlspecialchars($row['email']) . "</td>";
+                                echo "<td class='px-6 py-2'>" . htmlspecialchars($row['address']) . "</td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='4' class='px-6 py-2'>No records found</td></tr>";
+                        }
+
+                        $conn->close();
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<html>
+  <head>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+      defer
+    ></script>
+  </head>
+
+  <body class="min-h-screen overflow-y-auto bg-gray-100 text-gray-900 flex justify-center p-20 custom-nav">
+    <div class="w-full">
+      <div class="block sm:hidden">
+        <button id="hamburger-btn" class="text-white">
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <nav class="py-4 block">
+        <div class="container mx-auto flex justify-between items-center">
+          <!-- Left links -->
+          <div class="flex space-x-4 text-xl items">
+            <a href="index.html" class="text-white font-semibold hover:text-gray-400"
+              >Home</a
+            >
+            <a href="registration.html" class="text-white hover:text-gray-400">Registration</a>
+            <a href="record.php" class="text-white hover:text-gray-400">Record</a>
+            <a href="about.html" class="text-white hover:text-gray-400">About</a>
+          </div>
+          <!-- Right button -->
+          <div>
+            <button
+              class="text-white border-2 border-white font-bold hover:bg-white hover:text-gray-800 py-2 px-8 rounded"
+            >
+              Name
+            </button>
+          </div>
+        </div>
+      </nav>
+      <section>
+        <div
+          id="news-container"
+          class="container mx-auto mt-8 grid gap-6 grid-cols-1 sm:grid-cols-2 "
+        >
+          <!-- News articles will be injected here by JavaScript -->
+        </div>
+      </section>
+    </div>
+    <script>
+      function truncateText(text, maxLength) {
+        if (!text) return '';
+        if (text.length > maxLength) {
+          return text.substring(0, maxLength) + '...';
+        }
+        return text;
+      }
+      async function fetchNews() {
+        const apiKey = "f7d54802ae9d4e2eb6b90d6e456b63ee";
+        const response = await fetch(
+          `https://newsapi.org/v2/everything?q=latest&apiKey=${apiKey}`
+        );
+        const data = await response.json();
+        console.log(data)
+        return data.articles;
+      }
+
+      function createNewsCard(article) {
+        if(!article.urlToImage || !article.url || !article.description){
+          return null
+        }
+        return `
+            <div class="flex bg-white  shadow-md ">
+                <img src="${article.urlToImage}" alt="Article Image" class="w-2/4 max-h-[250px] object-cover">
+                <div class="w-2/4 p-4 flex flex-col gap-3">
+                    <span class="text-gray-700 text-sm ">${new Date(article.publishedAt).toDateString()}</span>
+                    <h2 class="text-2xl  text-gray-800">${truncateText(article.description, 15)}</h2>
+                    <p class="text-gray-600">${truncateText(article.description, 45)}</p>
+                    <a href="${article.url}" class=" block gradient-underline">Read more</a>
+                </div>
+            </div>
+            `;
+      }
+
+      async function displayNews() {
+        const newsContainer = document.getElementById("news-container");
+        const articles = await fetchNews();
+        newsContainer.innerHTML = articles.map(createNewsCard).join("");
+      }
+      displayNews();
+      document.addEventListener("DOMContentLoaded", function () {
+      const hamburgerBtn = document.getElementById("hamburger-btn");
+      const body = document.body;
+
+      hamburgerBtn.addEventListener("click", function () {
+        body.classList.toggle("custom-nav");
+      });
+    });
+
+      
+    </script>
+  </body>
+</html>
